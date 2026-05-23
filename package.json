@@ -1,0 +1,37 @@
+{
+  "name": "cascade",
+  "version": "1.0.0",
+  "description": "一行命令让中国开发者用任何国产模型驱动任何 AI 编程工具 — 多供应商 AI 编程 Harness",
+  "type": "module",
+  "main": "packages/proxy/cascade.mjs",
+  "bin": {
+    "cascade": "packages/proxy/cascade.mjs"
+  },
+  "scripts": {
+    "start": "node packages/proxy/cascade.mjs",
+    "dev": "node --watch packages/proxy/cascade.mjs",
+    "test": "node --test packages/proxy/test/*.test.mjs"
+  },
+  "keywords": [
+    "ai",
+    "llm",
+    "proxy",
+    "deepseek",
+    "qwen",
+    "kimi",
+    "glm",
+    "codex",
+    "claude-code",
+    "cursor",
+    "cline",
+    "chinese"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cascade/cascade"
+  }
+}

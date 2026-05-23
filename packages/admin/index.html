@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cascade — Admin Panel</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f172a;--sidebar:#1e293b;--card:#1e293b;--border:#334155;
+  --text:#e2e8f0;--muted:#94a3b8;--accent:#818cf8;--accent2:#6366f1;
+  --green:#34d399;--red:#f87171;--yellow:#fbbf24;--blue:#60a5fa;
+  --deepseek:#4F46E5;--qwen:#00A4FF;--kimi:#8B5CF6;--glm:#3B82F6;
+}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;display:flex;height:100vh}
+/* Sidebar */
+nav{width:220px;background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:20px 0;flex-shrink:0}
+nav .logo{padding:0 20px 24px;font-size:20px;font-weight:700;color:var(--accent);letter-spacing:-0.5px}
+nav .logo span{font-size:12px;color:var(--muted);display:block;font-weight:400;margin-top:2px}
+nav a{display:block;padding:10px 20px;color:var(--muted);text-decoration:none;font-size:14px;transition:all .15s;border-left:2px solid transparent}
+nav a:hover{color:var(--text);background:rgba(255,255,255,.03)}
+nav a.active{color:var(--accent);border-left-color:var(--accent);background:rgba(99,102,241,.08)}
+/* Main */
+main{flex:1;overflow-y:auto;padding:32px}
+h1{font-size:24px;font-weight:600;margin-bottom:24px}
+h2{font-size:18px;font-weight:600;margin:24px 0 12px}
+/* Cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:24px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px}
+.card h3{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.card .val{font-size:28px;font-weight:700}
+.card .sub{font-size:12px;color:var(--muted);margin-top:4px}
+.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.status-dot.online{background:var(--green);box-shadow:0 0 6px var(--green)}
+.status-dot.offline{background:var(--red)}
+/* Tables */
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);color:var(--muted);font-weight:500;font-size:12px;text-transform:uppercase}
+td{padding:10px 12px;border-bottom:1px solid rgba(51,65,85,.5)}
+tr:hover td{background:rgba(255,255,255,.02)}
+/* Buttons & Inputs */
+button,.btn{padding:6px 14px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;font-size:13px;transition:all .15s}
+button:hover,.btn:hover{background:var(--border)}
+button.primary{background:var(--accent2);border-color:var(--accent2);color:#fff}
+button.primary:hover{background:var(--accent)}
+button.test{font-size:12px;padding:4px 10px}
+input,select{padding:8px 12px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;width:100%}
+input:focus,select:focus{outline:none;border-color:var(--accent)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500}
+.tag.ds{background:rgba(79,70,229,.2);color:#a5b4fc}
+.tag.qw{background:rgba(0,164,255,.2);color:#7dd3fc}
+.tag.km{background:rgba(139,92,246,.2);color:#c4b5fd}
+.tag.gl{background:rgba(59,130,246,.2);color:#93c5fd}
+/* Logs */
+.log-container{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;height:400px;overflow-y:auto;font-family:'SF Mono',Monaco,monospace;font-size:12px;line-height:1.6}
+.log-line{padding:2px 0;white-space:pre-wrap}
+.log-line.ds{color:#a5b4fc}
+.log-line.qw{color:#7dd3fc}
+.log-line.km{color:#c4b5fd}
+.log-line.gl{color:#93c5fd}
+.log-line.err{color:var(--red)}
+/* Tabs */
+.tab-content{display:none}
+.tab-content.active{display:block}
+/* Test result */
+.test-result{margin-top:8px;font-size:12px;padding:6px 10px;border-radius:6px}
+.test-result.ok{background:rgba(52,211,153,.1);color:var(--green)}
+.test-result.fail{background:rgba(248,113,113,.1);color:var(--red)}
+/* Toast */
+.toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:8px;font-size:14px;animation:fadeIn .3s;z-index:100}
+.toast.ok{background:var(--green);color:#0f172a}
+.toast.err{background:var(--red);color:#fff}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Cascade<span>Admin Panel</span></div>
+  <a href="#dashboard" class="active" data-tab="dashboard">Dashboard</a>
+  <a href="#providers" data-tab="providers">Providers</a>
+  <a href="#modelmap" data-tab="modelmap">Model Map</a>
+  <a href="#logs" data-tab="logs">Logs</a>
+</nav>
+
+<main>
+  <!-- Dashboard -->
+  <section id="tab-dashboard" class="tab-content active">
+    <h1>Dashboard</h1>
+    <div class="cards" id="status-cards"></div>
+    <h2>Providers</h2>
+    <div class="cards" id="provider-cards"></div>
+  </section>
+
+  <!-- Providers -->
+  <section id="tab-providers" class="tab-content">
+    <h1>Providers</h1>
+    <table>
+      <thead><tr><th>Provider</th><th>API Host</th><th>Model</th><th>API Key</th><th>Status</th><th></th></tr></thead>
+      <tbody id="provider-table"></tbody>
+    </table>
+  </section>
+
+  <!-- Model Map -->
+  <section id="tab-modelmap" class="tab-content">
+    <h1>Model Map</h1>
+    <p style="color:var(--muted);margin-bottom:16px">Map tool-facing model names to actual provider models.</p>
+    <table>
+      <thead><tr><th>Tool Model</th><th>→ Provider</th><th>Actual Model</th><th></th></tr></thead>
+      <tbody id="modelmap-table"></tbody>
+    </table>
+    <button class="primary" style="margin-top:12px" onclick="addModelMap()">+ Add Mapping</button>
+  </section>
+
+  <!-- Logs -->
+  <section id="tab-logs" class="tab-content">
+    <h1>Logs</h1>
+    <div class="log-container" id="log-view"><div class="log-line" style="color:var(--muted)">Connecting...</div></div>
+  </section>
+</main>
+
+<script>
+// ====== Router ======
+document.querySelectorAll('nav a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('nav a').forEach(x => x.classList.remove('active'));
+    a.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    document.getElementById('tab-' + a.dataset.tab).classList.add('active');
+    if (a.dataset.tab === 'logs') connectLogs();
+    else if (logSource) { logSource.close(); logSource = null; }
+  });
+});
+
+// ====== Toast ======
+function toast(msg, type = 'ok') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// ====== API helpers ======
+async function api(path, opts = {}) {
+  const res = await fetch(path, opts);
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+// ====== Dashboard ======
+async function loadDashboard() {
+  const s = await api('/admin/status');
+  document.getElementById('status-cards').innerHTML =
+    `<div class="card"><h3>Uptime</h3><div class="val">${fmtUptime(s.uptime)}</div></div>
+     <div class="card"><h3>Total Requests</h3><div class="val">${s.requests}</div></div>
+     <div class="card"><h3>Port</h3><div class="val">${s.port}</div></div>`;
+
+  const colors = { deepseek: 'ds', qwen: 'qw', kimi: 'km', glm: 'gl' };
+  document.getElementById('provider-cards').innerHTML = Object.entries(s.providers).map(([k, v]) =>
+    `<div class="card">
+      <h3><span class="status-dot ${v.hasKey ? 'online' : 'offline'}"></span>${v.name}</h3>
+      <div class="val" style="font-size:18px"><span class="tag ${colors[k]||''}">${v.model}</span></div>
+      <div class="sub">${v.hasKey ? 'API Key configured' : 'No API Key'}</div>
+      ${v.hasKey ? `<button class="btn test" style="margin-top:8px" onclick="testProvider('${k}')">Test Connection</button>
+      <div id="test-${k}"></div>` : ''}
+    </div>`
+  ).join('');
+}
+
+// ====== Providers ======
+async function loadProviders() {
+  const s = await api('/admin/status');
+  const colors = { deepseek: 'ds', qwen: 'qw', kimi: 'km', glm: 'gl' };
+  document.getElementById('provider-table').innerHTML = Object.entries(s.providers).map(([k, v]) =>
+    `<tr>
+      <td><span class="tag ${colors[k]||''}">${v.name}</span></td>
+      <td style="font-family:monospace;font-size:12px">${v.host || '—'}</td>
+      <td><input value="${v.model}" data-provider="${k}" data-field="model" style="width:180px"></td>
+      <td><input type="password" value="${v.hasKey ? '••••••••' : ''}" data-provider="${k}" data-field="apiKey" style="width:200px" placeholder="sk-..."></td>
+      <td><span class="status-dot ${v.hasKey ? 'online' : 'offline'}"></span>${v.hasKey ? 'Ready' : 'No Key'}</td>
+      <td>
+        <button class="test" onclick="testProvider('${k}')">Test</button>
+        <button onclick="saveProvider('${k}')">Save</button>
+      </td>
+    </tr>`
+  ).join('');
+}
+
+async function saveProvider(key) {
+  const row = document.querySelector(`[data-provider="${key}"]`).closest('tr');
+  const model = row.querySelector('[data-field="model"]').value;
+  const apiKey = row.querySelector('[data-field="apiKey"]').value;
+  if (apiKey && apiKey !== '••••••••') {
+    await api('/admin/config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ providers: { [key]: { model, apiKey } } }),
+    });
+  } else if (model) {
+    await api('/admin/config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ providers: { [key]: { model } } }),
+    });
+  }
+  toast(`${key} saved`);
+  loadProviders();
+  loadDashboard();
+}
+
+async function testProvider(key) {
+  const el = document.getElementById('test-' + key);
+  if (!el) return;
+  el.innerHTML = '<div class="test-result">Testing...</div>';
+  try {
+    const r = await api('/admin/test/' + key, { method: 'POST' });
+    el.innerHTML = `<div class="test-result ${r.ok ? 'ok' : 'fail'}">${r.ok ? 'OK' : 'FAIL'} — ${r.latency}ms</div>`;
+  } catch (e) {
+    el.innerHTML = `<div class="test-result fail">${e.message}</div>`;
+  }
+}
+
+// ====== Model Map ======
+async function loadModelMap() {
+  const s = await api('/admin/status');
+  const colors = { deepseek: 'ds', qwen: 'qw', kimi: 'km', glm: 'gl' };
+  document.getElementById('modelmap-table').innerHTML = Object.entries(s.modelMap).map(([from, to]) =>
+    `<tr>
+      <td><code>${from}</code></td>
+      <td><span class="tag ${colors[to]||''}">${to}</span></td>
+      <td><select data-from="${from}" style="width:160px">
+        ${Object.keys(s.providers).map(p => `<option ${p === to ? 'selected' : ''}>${p}</option>`).join('')}
+      </select></td>
+      <td><button onclick="updateModelMap('${from}', this)">Save</button>
+          <button onclick="deleteModelMap('${from}')">×</button></td>
+    </tr>`
+  ).join('');
+}
+
+async function updateModelMap(from, btn) {
+  const sel = btn.closest('tr').querySelector('select');
+  await api('/admin/config', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ modelMap: { [from]: sel.value } }),
+  });
+  toast(`Model map updated`);
+  loadModelMap();
+}
+
+async function deleteModelMap(from) {
+  await api('/admin/config', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ modelMap: { [from]: null } }),
+  });
+  toast(`Removed: ${from}`);
+  loadModelMap();
+}
+
+function addModelMap() {
+  const name = prompt('Tool model name (e.g., gpt-5.5):');
+  if (!name) return;
+  api('/admin/config', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ modelMap: { [name]: 'deepseek' } }),
+  }).then(() => { toast('Added'); loadModelMap(); });
+}
+
+// ====== Logs (SSE) ======
+let logSource = null;
+function connectLogs() {
+  if (logSource) return;
+  const view = document.getElementById('log-view');
+  view.innerHTML = '';
+  // Poll /admin/status for log display (simplified: use EventSource or polling)
+  // For now, show status-based log
+  let count = 0;
+  logSource = new EventSource('/admin/status');
+  logSource.onerror = () => {
+    // Fallback: poll status
+  };
+  // Use polling since we don't have a real SSE log endpoint yet
+  const poll = setInterval(async () => {
+    try {
+      const s = await api('/admin/status');
+      const line = `[${new Date().toISOString().slice(11,19)}] Requests: ${s.requests} | Providers: ${Object.keys(s.providers).filter(k => s.providers[k].hasKey).join(', ') || 'none'}`;
+      const div = document.createElement('div');
+      div.className = 'log-line';
+      div.textContent = line;
+      view.appendChild(div);
+      if (view.children.length > 200) view.firstChild.remove();
+      view.scrollTop = view.scrollHeight;
+    } catch {}
+  }, 2000);
+  logSource = { close() { clearInterval(poll); logSource = null; } };
+}
+
+// ====== Utilities ======
+function fmtUptime(s) {
+  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60);
+  return h > 0 ? `${h}h ${m}m` : `${m}m ${s % 60}s`;
+}
+
+// ====== Init ======
+function refresh() {
+  const tab = document.querySelector('.tab-content.active');
+  if (!tab) return;
+  switch (tab.id) {
+    case 'tab-dashboard': loadDashboard(); break;
+    case 'tab-providers': loadProviders(); break;
+    case 'tab-modelmap': loadModelMap(); break;
+  }
+}
+refresh();
+setInterval(refresh, 10000);
+</script>
+</body>
+</html>

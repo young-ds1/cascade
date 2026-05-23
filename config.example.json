@@ -1,0 +1,38 @@
+{
+  "port": 8765,
+  "host": "127.0.0.1",
+  "providers": {
+    "deepseek": {
+      "name": "DeepSeek V4 Pro",
+      "model": "deepseek-v4-pro",
+      "apiKey": ""
+    },
+    "qwen": {
+      "name": "Qwen3-Coder",
+      "model": "qwen3-coder",
+      "apiKey": ""
+    },
+    "kimi": {
+      "name": "Kimi K2.6",
+      "model": "kimi-k2-0906-preview",
+      "apiKey": ""
+    },
+    "glm": {
+      "name": "GLM-5.1",
+      "model": "glm-4.6",
+      "apiKey": ""
+    }
+  },
+  "modelMap": {
+    "gpt-5.5": "deepseek",
+    "gpt-5.1": "deepseek",
+    "gpt-5": "deepseek",
+    "gpt-4o": "deepseek",
+    "claude-sonnet-4-6": "deepseek",
+    "claude-opus-4-7": "deepseek",
+    "deepseek-v4-pro": "deepseek",
+    "qwen3-coder": "qwen",
+    "kimi-k2": "kimi",
+    "glm-4": "glm"
+  }
+}
