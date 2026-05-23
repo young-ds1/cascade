@@ -27,6 +27,7 @@ export function loadConfig(configPath) {
 
   // 环境变量覆盖端口
   if (process.env.CASCADE_PORT) defaults.port = parseInt(process.env.CASCADE_PORT, 10);
+	if (process.env.CASCADE_HOST) defaults.host = process.env.CASCADE_HOST;
 
   // 加载 config.json 合并
   try {

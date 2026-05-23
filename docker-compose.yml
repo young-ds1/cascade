@@ -1,0 +1,28 @@
+# Cascade — 多供应商 AI 编程 Harness
+# 一行 docker compose up 跑起来
+
+services:
+  cascade:
+    build: .
+    container_name: cascade
+    ports:
+      - "8765:8765"
+    environment:
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      - QWEN_API_KEY=${QWEN_API_KEY:-}
+      - KIMI_API_KEY=${KIMI_API_KEY:-}
+      - GLM_API_KEY=${GLM_API_KEY:-}
+      - CASCADE_PORT=8765
+      - CASCADE_HOST=0.0.0.0
+    volumes:
+      # Mount config for hot-reload (edit config.json without rebuild)
+      - ./config.json:/app/config.json:ro
+      # Persist logs
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - cascade-net
+
+networks:
+  cascade-net:
+    driver: bridge

@@ -1,0 +1,11 @@
+node_modules/
+*.log
+*.pid
+.env
+.git/
+.gitignore
+config.json
+!config.example.json
+garden-gpt-image-2/
+*.md
+!README.md
