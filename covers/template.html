@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1080px; height: 1440px;
+    background: #0b0f1a;
+    font-family: system-ui, -apple-system, 'PingFang SC', sans-serif;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  /* 霓虹光晕 */
+  body::before {
+    content: ''; position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(139,92,246,0.15), transparent 70%);
+    top: 200px; left: 50%; transform: translateX(-50%);
+  }
+  body::after {
+    content: ''; position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(6,182,212,0.1), transparent 70%);
+    bottom: 300px; left: 50%; transform: translateX(-50%);
+  }
+  .logo {
+    position: absolute; top: 80px; left: 80px;
+    color: #8b5cf6; font-size: 28px; font-weight: 700;
+    letter-spacing: 2px;
+  }
+  .main {
+    position: relative; z-index: 1;
+    text-align: center; padding: 0 80px;
+  }
+  .title {
+    color: #f8fafc; font-size: 72px; font-weight: 800;
+    line-height: 1.3; letter-spacing: 2px;
+    text-shadow: 0 0 80px rgba(139,92,246,0.3);
+  }
+  .title .accent {
+    color: #06b6d4;
+  }
+  .subtitle {
+    color: #94a3b8; font-size: 32px; margin-top: 48px;
+    font-weight: 400;
+  }
+  .tag {
+    position: absolute; bottom: 120px;
+    color: #64748b; font-size: 24px;
+    display: flex; gap: 32px;
+  }
+  .tag span {
+    background: rgba(139,92,246,0.1);
+    border: 1px solid rgba(139,92,246,0.2);
+    border-radius: 8px;
+    padding: 12px 28px;
+    color: #a78bfa;
+  }
+</style>
+</head>
+<body>
+  <div class="logo">CASCADE</div>
+  <div class="main">
+    <div class="title" id="titleText">
+      TITLE<br><span class="accent">HERE</span>
+    </div>
+    <div class="subtitle" id="subText">subtitle line</div>
+  </div>
+  <div class="tag">
+    <span>开源免费</span>
+    <span>一行命令</span>
+    <span>MIT</span>
+  </div>
+</body>
+</html>

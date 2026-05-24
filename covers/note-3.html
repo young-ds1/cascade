@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1080px; height: 1440px;
+    background: #0b0f1a;
+    font-family: system-ui, -apple-system, 'PingFang SC', sans-serif;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    overflow: hidden; position: relative;
+  }
+  body::before {
+    content: ''; position: absolute;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(239,68,68,0.12), transparent 70%);
+    top: 300px; left: 30%; transform: translateX(-50%);
+  }
+  .logo { position: absolute; top: 80px; left: 80px; color: #8b5cf6; font-size: 28px; font-weight: 700; letter-spacing: 2px; }
+  .main { position: relative; z-index: 1; text-align: center; padding: 0 80px; }
+  .pit-num { color: #ef4444; font-size: 160px; font-weight: 900; line-height: 1; }
+  .title { color: #f8fafc; font-size: 48px; font-weight: 800; line-height: 1.35; margin-top: 16px; }
+  .title .accent { color: #ef4444; }
+  .pits { color: #94a3b8; font-size: 24px; margin-top: 40px; text-align: left; }
+  .pits div { margin: 12px 0; }
+  .pits span { margin-right: 8px; }
+  .tags { position: absolute; bottom: 100px; display: flex; gap: 24px; }
+  .tags span { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.15); border-radius: 8px; padding: 12px 28px; color: #f87171; font-size: 22px; }
+</style>
+</head>
+<body>
+  <div class="logo">CASCADE</div>
+  <div class="main">
+    <div class="pit-num">5 坑</div>
+    <div class="title">搞了 <span class="accent">3 天</span> 才让<br>Claude Code 吃上国产模型</div>
+    <div class="pits">
+      <div><span>🔌</span> WebSocket 帧格式解析</div>
+      <div><span>📡</span> SSE 流式实时翻译</div>
+      <div><span>🗺️</span> 模型名动态路由</div>
+      <div><span>📦</span> 结构化深拷贝陷阱</div>
+      <div><span>🖥️</span> 单文件 SPA 管理面板</div>
+    </div>
+  </div>
+  <div class="tags">
+    <span>踩坑复盘</span>
+    <span>血泪史</span>
+    <span>MIT</span>
+  </div>
+</body>
+</html>

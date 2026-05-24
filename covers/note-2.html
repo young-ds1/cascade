@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1080px; height: 1440px;
+    background: #0b0f1a;
+    font-family: system-ui, -apple-system, 'PingFang SC', sans-serif;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    overflow: hidden; position: relative;
+  }
+  body::before {
+    content: ''; position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(6,182,212,0.13), transparent 70%);
+    top: 150px; left: 50%; transform: translateX(-50%);
+  }
+  .logo { position: absolute; top: 80px; left: 80px; color: #8b5cf6; font-size: 28px; font-weight: 700; letter-spacing: 2px; }
+  .main { position: relative; z-index: 1; text-align: center; padding: 0 80px; }
+  .step-num { color: #06b6d4; font-size: 140px; font-weight: 900; line-height: 1; }
+  .title { color: #f8fafc; font-size: 56px; font-weight: 800; line-height: 1.35; margin-top: 20px; text-shadow: 0 0 80px rgba(6,182,212,0.2); }
+  .title .accent { color: #8b5cf6; }
+  .steps { color: #94a3b8; font-size: 28px; margin-top: 48px; text-align: left; }
+  .steps div { margin: 16px 0; }
+  .steps span { color: #06b6d4; font-weight: 700; margin-right: 12px; }
+  .tags { position: absolute; bottom: 100px; display: flex; gap: 24px; }
+  .tags span { background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2); border-radius: 8px; padding: 12px 28px; color: #a78bfa; font-size: 22px; }
+</style>
+</head>
+<body>
+  <div class="logo">CASCADE</div>
+  <div class="main">
+    <div class="step-num">3 步</div>
+    <div class="title">让 Codex CLI 吃上<br><span class="accent">DeepSeek</span></div>
+    <div class="steps">
+      <div><span>1</span> 申请 DeepSeek API Key</div>
+      <div><span>2</span> 终端跑一行命令</div>
+      <div><span>3</span> 把 Base URL 指向 localhost</div>
+    </div>
+  </div>
+  <div class="tags">
+    <span>有手就行</span>
+    <span>零依赖</span>
+    <span>MIT</span>
+  </div>
+</body>
+</html>

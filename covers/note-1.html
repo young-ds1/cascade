@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1080px; height: 1440px;
+    background: #0b0f1a;
+    font-family: system-ui, -apple-system, 'PingFang SC', sans-serif;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    overflow: hidden; position: relative;
+  }
+  body::before {
+    content: ''; position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(139,92,246,0.15), transparent 70%);
+    top: 200px; left: 50%; transform: translateX(-50%);
+  }
+  body::after {
+    content: ''; position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(6,182,212,0.1), transparent 70%);
+    bottom: 300px; left: 50%; transform: translateX(-50%);
+  }
+  .logo {
+    position: absolute; top: 80px; left: 80px;
+    color: #8b5cf6; font-size: 28px; font-weight: 700;
+    letter-spacing: 2px;
+  }
+  .main {
+    position: relative; z-index: 1;
+    text-align: center; padding: 0 80px;
+  }
+  .title {
+    color: #f8fafc; font-size: 68px; font-weight: 800;
+    line-height: 1.35; letter-spacing: 2px;
+    text-shadow: 0 0 80px rgba(139,92,246,0.3);
+  }
+  .title .accent { color: #06b6d4; }
+  .emoji { font-size: 96px; margin-top: 40px; }
+  .subtitle {
+    color: #94a3b8; font-size: 30px; margin-top: 36px;
+    font-weight: 400;
+  }
+  .tags {
+    position: absolute; bottom: 100px;
+    display: flex; gap: 24px;
+  }
+  .tags span {
+    background: rgba(139,92,246,0.1);
+    border: 1px solid rgba(139,92,246,0.2);
+    border-radius: 8px;
+    padding: 12px 28px;
+    color: #a78bfa; font-size: 22px;
+  }
+</style>
+</head>
+<body>
+  <div class="logo">CASCADE</div>
+  <div class="main">
+    <div class="title">
+      独立开发者<br>
+      终于可以<span class="accent">白嫖</span><br>
+      DeepSeek 写代码了
+    </div>
+    <div class="emoji">🛠️</div>
+    <div class="subtitle">一行命令，AI 编程工具吃上国产模型</div>
+  </div>
+  <div class="tags">
+    <span>开源免费</span>
+    <span>一行命令</span>
+    <span>MIT</span>
+  </div>
+</body>
+</html>

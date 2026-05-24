@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1080px; height: 1440px;
+    background: #0b0f1a;
+    font-family: system-ui, -apple-system, 'PingFang SC', sans-serif;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    overflow: hidden; position: relative;
+  }
+  body::before {
+    content: ''; position: absolute;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(139,92,246,0.1), transparent 70%);
+    top: 400px; right: 20%;
+  }
+  body::after {
+    content: ''; position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(6,182,212,0.08), transparent 70%);
+    bottom: 250px; left: 25%;
+  }
+  .logo { position: absolute; top: 80px; left: 80px; color: #8b5cf6; font-size: 28px; font-weight: 700; letter-spacing: 2px; }
+  .main { position: relative; z-index: 1; text-align: center; padding: 0 80px; }
+  .vs { color: #f8fafc; font-size: 56px; font-weight: 800; margin-bottom: 40px; }
+  .vs .accent { color: #06b6d4; }
+  .models { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+  .model-card {
+    background: rgba(30,41,59,0.6); border: 1px solid rgba(139,92,246,0.15);
+    border-radius: 16px; padding: 36px 28px; width: 200px; text-align: center;
+  }
+  .model-card .name { color: #f8fafc; font-size: 24px; font-weight: 700; }
+  .model-card .score { color: #06b6d4; font-size: 40px; font-weight: 900; margin: 12px 0; }
+  .model-card .detail { color: #94a3b8; font-size: 18px; }
+  .best { border-color: rgba(6,182,212,0.4); background: rgba(6,182,212,0.08); }
+  .tags { position: absolute; bottom: 100px; display: flex; gap: 24px; }
+  .tags span { background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2); border-radius: 8px; padding: 12px 28px; color: #a78bfa; font-size: 22px; }
+</style>
+</head>
+<body>
+  <div class="logo">CASCADE</div>
+  <div class="main">
+    <div class="vs">4 家国产模型<br><span class="accent">写代码谁最强？</span></div>
+    <div class="models">
+      <div class="model-card best">
+        <div class="name">DeepSeek V4</div>
+        <div class="score">⭐⭐⭐⭐⭐</div>
+        <div class="detail">性价比之王</div>
+      </div>
+      <div class="model-card">
+        <div class="name">Qwen3</div>
+        <div class="score">⭐⭐⭐⭐</div>
+        <div class="detail">代码质量高</div>
+      </div>
+      <div class="model-card">
+        <div class="name">Kimi K2</div>
+        <div class="score">⭐⭐⭐</div>
+        <div class="detail">速度快</div>
+      </div>
+      <div class="model-card">
+        <div class="name">GLM-5</div>
+        <div class="score">⭐⭐⭐</div>
+        <div class="detail">中文友好</div>
+      </div>
+    </div>
+  </div>
+  <div class="tags">
+    <span>真实实测</span>
+    <span>100 次</span>
+    <span>MIT</span>
+  </div>
+</body>
+</html>
